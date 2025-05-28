@@ -14,6 +14,7 @@
 #include <QByteArray>
 #include "VentanaPrincipal.h"
 #include "SesionUsuario.h"
+#include "VentanaLector.h"
 
 
 
@@ -168,9 +169,9 @@ void LoginCreativo::simularLogin() {
         mostrarContrasena->setChecked(false);
         this->close();
     } else if (dbTipo == "lector") {
-        //VentanaLector *lector = new VentanaLector();
-        //lector->show();
-        //this->close();
+        VentanaLector *lector = new VentanaLector(this);
+        lector->show();
+        this->close();
     } else {
         QMessageBox::critical(this, "Error", "Tipo de usuario no reconocido.");
     }
@@ -178,4 +179,5 @@ void LoginCreativo::simularLogin() {
     PQclear(res);
     conexion.desconectar();
 }
+
 
