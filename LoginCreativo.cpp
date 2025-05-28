@@ -172,6 +172,9 @@ void LoginCreativo::simularLogin() {
         VentanaLector *lector = new VentanaLector(this);
         lector->show();
         this->close();
+        usuarioInput->clear();
+        contrasenaInput->clear();
+        mostrarContrasena->setChecked(false);
     } else {
         QMessageBox::critical(this, "Error", "Tipo de usuario no reconocido.");
     }
