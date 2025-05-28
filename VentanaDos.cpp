@@ -2,11 +2,10 @@
 #include "VentanaPrincipal.h"
 #include "AgregarLibro.h"
 #include "BuscarLibro.h"
+#include "VentanaSolicitudes.h"
 /*
 #include "VentanaPrestarLibro.h"
 #include "VentanaDevolverLibro.h"
-
-#include "VentanaMostrarLibros.h"
 */
 #include <QPushButton>
 #include <QVBoxLayout>
@@ -86,13 +85,12 @@ VentanaDos::VentanaDos(VentanaPrincipal *ventanaPrincipal, QWidget *parent)
         VentanaDevolverLibro *ventana = new VentanaDevolverLibro(this);
         ventana->show();
     });
-
-    connect(btnMostrar, &QPushButton::clicked, [=]() {
+    */
+   connect(btnMostrar, &QPushButton::clicked, [=]() {
         this->hide();
-        VentanaMostrarLibros *ventana = new VentanaMostrarLibros(this);
+        VentanaSolicitudes *ventana = new VentanaSolicitudes(this);
         ventana->show();
     });
-    */
 
     connect(btnVolver, &QPushButton::clicked, [=]() {
         this->close();
