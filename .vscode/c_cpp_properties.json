@@ -1,0 +1,27 @@
+{
+    "configurations": [
+      {
+        "name": "Win32",
+        "includePath": [
+          "${workspaceFolder}/**",
+          "C:/Program Files/PostgreSQL/15/include",
+          "C:/msys64/ucrt64/include",
+          "C:/msys64/ucrt64/include/qt6",
+          "C:/msys64/ucrt64/include/qt6/QtCore",
+          "C:/msys64/ucrt64/include/qt6/QtGui",
+          "C:/msys64/ucrt64/include/qt6/QtWidgets"
+        ],
+        "defines": [
+          "_DEBUG",
+          "UNICODE",
+          "__GNUC__"
+        ],
+        "compilerPath": "C:/msys64/ucrt64/bin/g++.exe",
+        "cStandard": "c17",
+        "cppStandard": "c++17",
+        "intelliSenseMode": "windows-gcc-x64"
+      }
+    ],
+    "version": 4
+  }
+  
