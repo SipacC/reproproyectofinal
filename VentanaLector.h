@@ -5,7 +5,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include "LoginCreativo.h"
-//#include "BuscarLibrosUs.h"
+#include "BuscarLibrosUs.h"
 //#include "VentSolicitud.h"
 
 class VentanaLector : public QWidget {
@@ -19,9 +19,8 @@ private:
     QPushButton *btnSolicitudes;
     QPushButton *btnVolver;
 
-    QWidget *ventanaBuscarLibros;
     QWidget *ventanaSolicitudes;
-
+    BuscarLibrosUs *ventanaBuscarLibros;
     LoginCreativo* loginRef;
 };
 

@@ -35,18 +35,17 @@ VentanaLector::VentanaLector(LoginCreativo* login, QWidget *parent)
     setLayout(layout);
 
     // Eventos
-    /*
     connect(btnBuscarLibros, &QPushButton::clicked, [=]() {
-        ventanaBuscarLibros = new BuscarLibrosUs(this);
-        this->hide();
+        ventanaBuscarLibros = new BuscarLibrosUs(this);  
         ventanaBuscarLibros->show();
     });
+
+    /*
 
     connect(btnSolicitudes, &QPushButton::clicked, [=]() {
         ventanaSolicitudes = new VentSolicitud(this);
         this->hide();
         ventanaSolicitudes->show();
-    });
     */
 
     connect(btnVolver, &QPushButton::clicked, [=]() {

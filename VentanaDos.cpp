@@ -29,7 +29,7 @@ VentanaDos::VentanaDos(VentanaPrincipal *ventanaPrincipal, QWidget *parent)
     QPushButton *btnPrestar = new QPushButton("📤 Prestar Libro", this);
     QPushButton *btnDevolver = new QPushButton("📥 Devolver Libro", this);
     QPushButton *btnBuscar = new QPushButton("🔍 Buscar Libro", this);
-    QPushButton *btnMostrar = new QPushButton("📖 Mostrar Libros", this);
+    QPushButton *btnMostrar = new QPushButton("📖 Gestionar solicitudes", this);
     QPushButton *btnVolver = new QPushButton("🔙 Volver al Menú Principal", this);
 
     // Ajuste de altura mínima para los botones
