@@ -1,4 +1,5 @@
 #include "GestionSolicitudes.h"
+#include "SesionUsuario.h"
 #include <QMessageBox>
 #include <QDateTime>
 
@@ -113,4 +114,62 @@ bool GestionSolicitudes::actualizarEstadoSolicitud(int idSolicitud, const QStrin
     PQclear(res);
     conexion.desconectar();
     return true;
+}
+
+QList<Solicitud> GestionSolicitudes::obtenerSolicitudesFiltradasPorUsuario(const QString &estado) {
+    QList<Solicitud> lista;
+
+    if (!conexion.conectar()) {
+        return lista;
+    }
+
+    int idUsuario = SesionUsuario::instancia().getIdUsuario();
+
+    // Consulta ajustada: Traemos id_solicitud, id_usuario, isbn_libro, tipo, estado, fecha_solicitud
+    QString consulta = "SELECT id_solicitud, id_usuario, isbn_libro, tipo, estado, fecha_solicitud "
+                      "FROM Solicitudes WHERE id_usuario = $1";
+    QList<QVariant> parametros;
+    parametros.append(idUsuario);
+
+    if (!estado.isEmpty()) {
+        consulta += " AND estado = $2";
+        parametros.append(estado);
+    }
+
+    PGresult *res = nullptr;
+
+    if (parametros.size() == 1) {
+        QByteArray idStr = QByteArray::number(idUsuario);
+        const char *vals[] = {idStr.constData()};
+        res = PQexecParams(conexion.conn, consulta.toUtf8().constData(), 1, nullptr, vals, nullptr, nullptr, 0);
+    } else {
+        QByteArray idStr = QByteArray::number(idUsuario);
+        QByteArray estadoStr = estado.toUtf8();
+        const char *vals[] = {idStr.constData(), estadoStr.constData()};
+        res = PQexecParams(conexion.conn, consulta.toUtf8().constData(), 2, nullptr, vals, nullptr, nullptr, 0);
+    }
+
+    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
+        PQclear(res);
+        conexion.desconectar();
+        return lista;
+    }
+
+    int filas = PQntuples(res);
+    for (int i = 0; i < filas; i++) {
+        Solicitud s;
+        s.setIdSolicitud(QString(PQgetvalue(res, i, 0)).toInt());
+        s.setIdUsuario(QString(PQgetvalue(res, i, 1)).toInt());
+        s.setIsbnLibro(QString(PQgetvalue(res, i, 2)));
+        s.setTipo(QString(PQgetvalue(res, i, 3)));
+        s.setEstado(QString(PQgetvalue(res, i, 4)));
+        s.setFechaSolicitud(QString(PQgetvalue(res, i, 5)));
+
+        lista.append(s);
+    }
+
+    PQclear(res);
+    conexion.desconectar();
+
+    return lista;
 }

@@ -13,6 +13,8 @@ public:
     QList<Solicitud> obtenerSolicitudes(const QString &estadoFiltro = "", const QString &busqueda = "");
     QList<Solicitud> obtenerSolicitudesFiltradas(int id, const QString &estado);
     bool actualizarEstadoSolicitud(int idSolicitud, const QString &nuevoEstado);
+    QList<Solicitud> obtenerSolicitudesFiltradasPorUsuario(const QString &estado);
+
     
 
 
