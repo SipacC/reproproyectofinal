@@ -1,5 +1,6 @@
 #include "VentanaLector.h"
-#include "VentanaSolicitudesUs.h" 
+#include "VentanaSolicitudesUs.h"
+#include "SesionUsuario.h"
 #include <QVBoxLayout>
 #include <QFont>
 
@@ -42,10 +43,12 @@ VentanaLector::VentanaLector(LoginCreativo* login, QWidget *parent)
     });
 
     connect(btnSolicitudes, &QPushButton::clicked, [=]() {
-        ventanaSolicitudes = new VentanaSolicitudesUs(this);  // Aquí usas el constructor con `this` como ventanaAnterior
-        this->hide();  // Oculta la ventana actual
-        ventanaSolicitudes->show();  // Muestra la nueva
+    int idUsuario = SesionUsuario::instancia().getIdUsuario();
+    ventanaSolicitudes = new VentanaSolicitudesUs(idUsuario,this);
+    this->hide();
+    ventanaSolicitudes->show();
     });
+
 
 
     connect(btnVolver, &QPushButton::clicked, [=]() {

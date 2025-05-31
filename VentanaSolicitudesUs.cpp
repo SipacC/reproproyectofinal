@@ -5,8 +5,8 @@
 #include <QHeaderView>
 #include <QMessageBox>
 
-VentanaSolicitudesUs::VentanaSolicitudesUs(VentanaLector* anterior, QWidget *parent)
-    : QWidget(parent), ventanaAnterior(anterior)
+VentanaSolicitudesUs::VentanaSolicitudesUs(int idUsuario, VentanaLector* anterior, QWidget *parent)
+    : QWidget(parent), ventanaAnterior(anterior), idUsuario(idUsuario)
 {
     setWindowTitle("Solicitudes de Usuario");
     resize(800, 400);
@@ -16,6 +16,8 @@ VentanaSolicitudesUs::VentanaSolicitudesUs(VentanaLector* anterior, QWidget *par
     comboEstado = new QComboBox(this);
     botonActualizar = new QPushButton("Actualizar", this);
     botonRegresar = new QPushButton("Regresar", this);
+
+    botonNuevaSolicitud = new QPushButton("Nueva Solicitud", this);  // Crear botó
 
     configurarInterfaz();
     conectarEventos();
@@ -39,6 +41,7 @@ void VentanaSolicitudesUs::configurarInterfaz() {
     layoutFiltros->addWidget(inputBusqueda);
     layoutFiltros->addWidget(comboEstado);
     layoutFiltros->addWidget(botonActualizar);
+    layoutFiltros->addWidget(botonNuevaSolicitud);
     layoutFiltros->addWidget(botonRegresar);
 
     QVBoxLayout *layoutPrincipal = new QVBoxLayout(this);
@@ -57,11 +60,11 @@ void VentanaSolicitudesUs::configurarInterfaz() {
 void VentanaSolicitudesUs::cargarSolicitudes() {
     tablaSolicitudes->setRowCount(0);
 
+    // Obtener el filtro de estado seleccionado
     QString estado = comboEstado->currentData().toString();
-    QString idTexto = inputBusqueda->text();
-    int id = idTexto.toInt();
 
-    QList<Solicitud> lista = gestor.obtenerSolicitudesFiltradas(id, estado);
+    // Obtener solo las solicitudes del usuario actual, filtradas por estado
+    QList<Solicitud> lista = gestor.obtenerSolicitudesFiltradasPorUsuario(estado);
 
     tablaSolicitudes->setRowCount(lista.size());
 
@@ -77,6 +80,7 @@ void VentanaSolicitudesUs::cargarSolicitudes() {
 
     tablaSolicitudes->resizeColumnsToContents();
 }
+
 
 void VentanaSolicitudesUs::conectarEventos() {
     connect(botonActualizar, &QPushButton::clicked, this, [this]() {
@@ -94,5 +98,13 @@ void VentanaSolicitudesUs::conectarEventos() {
     connect(botonRegresar, &QPushButton::clicked, this, [this]() {
         this->close();
         ventanaAnterior->show();
+    });
+
+    connect(botonNuevaSolicitud, &QPushButton::clicked, this, [this]() {
+        if (!ventanaNuevas) {
+            ventanaNuevas = new VentanaSolicitudesNuevas(this);
+        }
+        this->hide();
+        ventanaNuevas->show();
     });
 }

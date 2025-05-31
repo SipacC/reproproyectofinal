@@ -125,9 +125,9 @@ QList<Solicitud> GestionSolicitudes::obtenerSolicitudesFiltradasPorUsuario(const
 
     int idUsuario = SesionUsuario::instancia().getIdUsuario();
 
-    // Consulta ajustada: Traemos id_solicitud, id_usuario, isbn_libro, tipo, estado, fecha_solicitud
     QString consulta = "SELECT id_solicitud, id_usuario, isbn_libro, tipo, estado, fecha_solicitud "
-                      "FROM Solicitudes WHERE id_usuario = $1";
+                      "FROM Solicitud WHERE id_usuario = $1";
+
     QList<QVariant> parametros;
     parametros.append(idUsuario);
 
@@ -137,15 +137,16 @@ QList<Solicitud> GestionSolicitudes::obtenerSolicitudesFiltradasPorUsuario(const
     }
 
     PGresult *res = nullptr;
+    int numParams = parametros.size();
 
-    if (parametros.size() == 1) {
-        QByteArray idStr = QByteArray::number(idUsuario);
-        const char *vals[] = {idStr.constData()};
+    QByteArray idStr = QByteArray::number(idUsuario);
+    QByteArray estadoStr = estado.toUtf8();
+
+    if (numParams == 1) {
+        const char *vals[] = { idStr.constData() };
         res = PQexecParams(conexion.conn, consulta.toUtf8().constData(), 1, nullptr, vals, nullptr, nullptr, 0);
     } else {
-        QByteArray idStr = QByteArray::number(idUsuario);
-        QByteArray estadoStr = estado.toUtf8();
-        const char *vals[] = {idStr.constData(), estadoStr.constData()};
+        const char *vals[] = { idStr.constData(), estadoStr.constData() };
         res = PQexecParams(conexion.conn, consulta.toUtf8().constData(), 2, nullptr, vals, nullptr, nullptr, 0);
     }
 
@@ -164,7 +165,6 @@ QList<Solicitud> GestionSolicitudes::obtenerSolicitudesFiltradasPorUsuario(const
         s.setTipo(QString(PQgetvalue(res, i, 3)));
         s.setEstado(QString(PQgetvalue(res, i, 4)));
         s.setFechaSolicitud(QString(PQgetvalue(res, i, 5)));
-
         lista.append(s);
     }
 

@@ -3,10 +3,8 @@
 #include "AgregarLibro.h"
 #include "BuscarLibro.h"
 #include "VentanaSolicitudes.h"
-/*
 #include "VentanaPrestarLibro.h"
-#include "VentanaDevolverLibro.h"
-*/
+
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QFont>
@@ -27,7 +25,7 @@ VentanaDos::VentanaDos(VentanaPrincipal *ventanaPrincipal, QWidget *parent)
     // Botones con iconos
     QPushButton *btnAgregar = new QPushButton("📚 Agregar Libro", this);
     QPushButton *btnPrestar = new QPushButton("📤 Prestar Libro", this);
-    QPushButton *btnDevolver = new QPushButton("📥 Devolver Libro", this);
+    //QPushButton *btnDevolver = new QPushButton("📥 Devolver Libro", this);
     QPushButton *btnBuscar = new QPushButton("🔍 Buscar Libro", this);
     QPushButton *btnMostrar = new QPushButton("📖 Gestionar solicitudes", this);
     QPushButton *btnVolver = new QPushButton("🔙 Volver al Menú Principal", this);
@@ -35,7 +33,7 @@ VentanaDos::VentanaDos(VentanaPrincipal *ventanaPrincipal, QWidget *parent)
     // Ajuste de altura mínima para los botones
     btnAgregar->setMinimumHeight(50);
     btnPrestar->setMinimumHeight(50);
-    btnDevolver->setMinimumHeight(50);
+    //btnDevolver->setMinimumHeight(50);
     btnBuscar->setMinimumHeight(50);
     btnMostrar->setMinimumHeight(50);
     btnVolver->setMinimumHeight(50);
@@ -46,7 +44,7 @@ VentanaDos::VentanaDos(VentanaPrincipal *ventanaPrincipal, QWidget *parent)
     layout->addSpacing(20);
     layout->addWidget(btnAgregar);
     layout->addWidget(btnPrestar);
-    layout->addWidget(btnDevolver);
+    //layout->addWidget(btnDevolver);
     layout->addWidget(btnBuscar);
     layout->addWidget(btnMostrar);
     layout->addSpacing(30);
@@ -72,14 +70,13 @@ VentanaDos::VentanaDos(VentanaPrincipal *ventanaPrincipal, QWidget *parent)
     });
 
     
-    /*
 
     connect(btnPrestar, &QPushButton::clicked, [=]() {
         this->hide();
         VentanaPrestarLibro *ventana = new VentanaPrestarLibro(this);
         ventana->show();
     });
-
+/*
     connect(btnDevolver, &QPushButton::clicked, [=]() {
         this->hide();
         VentanaDevolverLibro *ventana = new VentanaDevolverLibro(this);

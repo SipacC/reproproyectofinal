@@ -23,6 +23,7 @@ private:
     VentanaSolicitudesUs *ventanaSolicitudes;
     BuscarLibrosUs *ventanaBuscarLibros;
     LoginCreativo* loginRef;
+    int idUsuario;
 };
 
 #endif // VENTANALECTOR_H

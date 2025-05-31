@@ -8,6 +8,7 @@
 #include <QComboBox>
 
 #include "GestionSolicitudes.h"
+#include "VentanaSolicitudesNuevas.h"
 
 // ❗ Se eliminó inclusión circular innecesaria de "VentanaLector.h"
 // En su lugar, se hace una declaración adelantada
@@ -15,14 +16,17 @@ class VentanaLector;
 
 class VentanaSolicitudesUs : public QWidget {
 public:
-    explicit VentanaSolicitudesUs(VentanaLector* ventanaAnterior, QWidget *parent = nullptr);
+    explicit VentanaSolicitudesUs(int idUsuario, VentanaLector* ventanaAnterior, QWidget *parent = nullptr);
     
     // ✅ Definición del destructor agregada en el .cpp
     ~VentanaSolicitudesUs();
 
 private:
-    VentanaLector* ventanaAnterior;
+    int idUsuario;
 
+    VentanaLector* ventanaAnterior;
+    QPushButton* botonNuevaSolicitud;
+    VentanaSolicitudesNuevas* ventanaNuevas = nullptr;
     QTableWidget *tablaSolicitudes;
     QLineEdit *inputBusqueda;
     QComboBox *comboEstado;
