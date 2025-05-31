@@ -143,7 +143,7 @@ void LoginCreativo::simularLogin() {
     }
 
     if (PQntuples(res) == 0) {
-        QMessageBox::critical(this, "Error", "Usuario no encontrado.");
+        QMessageBox::critical(this, "Error", " las credendicales soon incorrectas.");
         PQclear(res);
         return;
     }
@@ -154,7 +154,7 @@ void LoginCreativo::simularLogin() {
     QString dbTipo = PQgetvalue(res, 0, 3);                     // Tipo
 
     if (dbContrasena != contrasenaHasheada) {
-        QMessageBox::critical(this, "Error", "Contraseña incorrecta.");
+        QMessageBox::critical(this, "Error", "las credendicales son incorrectas");
         PQclear(res);
         return;
     }
