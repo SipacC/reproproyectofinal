@@ -4,7 +4,7 @@
 #include "BuscarLibro.h"
 #include "VentanaSolicitudes.h"
 #include "VentanaPrestamo.h"
-#include "VentanaDevolverLibro.h"
+#include "VentanaMostrarPrestamos.h"
 
 #include <QPushButton>
 #include <QVBoxLayout>
@@ -80,7 +80,7 @@ VentanaDos::VentanaDos(VentanaPrincipal *ventanaPrincipal, QWidget *parent)
 
     connect(btnDevolver, &QPushButton::clicked, [=]() {
         this->hide();
-        VentanaDevolverLibro *ventana = new VentanaDevolverLibro(this);
+        VentanaMostrarPrestamos *ventana = new VentanaMostrarPrestamos(this);
         ventana->show();
     });
     

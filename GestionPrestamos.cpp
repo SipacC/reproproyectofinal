@@ -124,3 +124,81 @@ bool GestionPrestamos::registrarPrestamo(const Prestamo &prestamo) {
     conexion.desconectar();
     return true;
 }
+
+QList<Prestamo> GestionPrestamos::mostrarPrestamos() {
+    QList<Prestamo> lista;
+
+    if (!conexion.conectar()) {
+        QMessageBox::critical(nullptr, "Error", "No se pudo conectar a la base de datos.");
+        return lista;
+    }
+
+    QString query = "SELECT id_usuario, isbn_libro, fecha_prestamo, fecha_devolucion, estado FROM Prestamo ORDER BY fecha_prestamo DESC";
+    PGresult *res = PQexec(conexion.conn, query.toUtf8().constData());
+
+    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
+        QMessageBox::critical(nullptr, "Error", "No se pudo obtener los préstamos.");
+        PQclear(res);
+        conexion.desconectar();
+        return lista;
+    }
+
+    int rows = PQntuples(res);
+
+    for (int i = 0; i < rows; ++i) {
+        Prestamo p;
+        p.setIdUsuario(QString(PQgetvalue(res, i, 0)).toInt());
+        p.setIsbnLibro(QString(PQgetvalue(res, i, 1)));
+        p.setFechaPrestamo(QDate::fromString(QString(PQgetvalue(res, i, 2)), "yyyy-MM-dd"));
+        p.setFechaDevolucion(QDate::fromString(QString(PQgetvalue(res, i, 3)), "yyyy-MM-dd"));
+        p.setEstado(QString(PQgetvalue(res, i, 4)));
+        lista.append(p);
+    }
+
+    PQclear(res);
+    conexion.desconectar();
+
+    return lista;
+}
+
+bool GestionPrestamos::devolverPrestamo(int idUsuario, const QString &isbnLibro, const QDate &fechaPrestamo) {
+    if (!conexion.conectar()) {
+        QMessageBox::critical(nullptr, "Error", "No se pudo conectar a la base de datos.");
+        return false;
+    }
+
+    // Actualizar el estado a 'devuelto'
+    QString updateQuery = QString(
+        "UPDATE Prestamo SET estado = 'devuelto' WHERE id_usuario = %1 AND isbn_libro = '%2' AND fecha_prestamo = '%3'"
+    ).arg(idUsuario)
+     .arg(isbnLibro)
+     .arg(fechaPrestamo.toString("yyyy-MM-dd"));
+
+    PGresult *res = PQexec(conexion.conn, updateQuery.toUtf8().constData());
+
+    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+        QMessageBox::critical(nullptr, "Error", "No se pudo actualizar el estado del préstamo.");
+        PQclear(res);
+        conexion.desconectar();
+        return false;
+    }
+
+    PQclear(res);
+
+    // Incrementar ejemplares al devolver
+    QString updateEjemplaresQuery = QString(
+        "UPDATE Libro SET ejemplares = ejemplares + 1 WHERE ISBN = '%1'"
+    ).arg(isbnLibro);
+
+    PGresult *resEjemplares = PQexec(conexion.conn, updateEjemplaresQuery.toUtf8().constData());
+
+    if (PQresultStatus(resEjemplares) != PGRES_COMMAND_OK) {
+        QMessageBox::warning(nullptr, "Advertencia", "No se pudo actualizar los ejemplares del libro.");
+    }
+
+    PQclear(resEjemplares);
+    conexion.desconectar();
+
+    return true;
+}
+

@@ -12,10 +12,10 @@ public:
     // Registra un nuevo préstamo en la base de datos
     bool registrarPrestamo(const Prestamo &prestamo);
 
-    // Aquí luego se pueden agregar más métodos como:
-    // bool devolverPrestamo(int idPrestamo);
-    // QList<Prestamo> buscarPrestamos(int idUsuario);
-    // QList<Prestamo> listarPrestamos();
+     QList<Prestamo> mostrarPrestamos();
+
+    // Cambiar el estado de un préstamo identificado por usuario+isbn+fecha a "devuelto"
+    bool devolverPrestamo(int idUsuario, const QString &isbnLibro, const QDate &fechaPrestamo);
 
 private:
     Conexion conexion;
